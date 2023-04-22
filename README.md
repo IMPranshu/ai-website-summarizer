@@ -2,7 +2,13 @@
 https://user-images.githubusercontent.com/43396684/233769383-08122afd-e1fe-4f62-99e9-9622f88b9665.mp4
 
 
-Summarize any website and article by just pasting the link. 
+## Features
+
+- Summarize any website and article by just pasting the link. 
+
+- The recent 5 summaries are stored locally.
+
+- Copy summarized links directly to the clipboard
 
 ## Technologies used
 
