@@ -15,7 +15,7 @@ const Demo = () => {
    useEffect(() => {
     const articlesFromLocalStorage = JSON.parse(
     localStorage.getItem('articles')
-    )
+    );
     if(articlesFromLocalStorage){
       setAllArticles(articlesFromLocalStorage)
     }
@@ -24,6 +24,13 @@ const Demo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const existingArticle = allArticles.find(
+      (item) => item.url === article.url
+    );
+
+    if (existingArticle) return setArticle(existingArticle);
+
     const { data } = await getSummary({articleUrl: article.url});
 
     if(data?.summary){
@@ -43,7 +50,13 @@ const Demo = () => {
     navigator.clipboard.writeText(copyUrl);
     setTimeout(() => setCopied(false), 3000);
 
-  }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+    }
+  };
 
   return (
     <section className='mt-16 w-full max-w-xl'>
@@ -59,11 +72,12 @@ const Demo = () => {
           />
           <input
             type="url"
-            placeholder='Enter a URL'
+            placeholder='Paste any website link'
             value={article.url}
             onChange={(e) => setArticle({
               ...article, url: e.target.value
             })}
+            onKeyDown={handleKeyDown}
             required
             className='url_input peer'
           />
@@ -78,16 +92,16 @@ const Demo = () => {
          {/* Browse URL History */}
          <div className='flex flex-col gap-1 max-h-60 overflow-y-auto'>
 
-          {allArticles.map((item, index) => (
+          {allArticles.reverse().map((item, index) => (
             <div
               key={`link-${index}`}
               onClick={() => setArticle(item)}
               className='link_card'
             >
-              <div className='copy_btn' onClick={handleCopy(item.url)}>
+              <div className='copy_btn' onClick={() => handleCopy(item.url)}>
                 <img
                   src={copied === item.url ? tick : copy}
-                  alt='copy_icon'
+                  alt={copied === item.url ? "tick_icon" : "copy_icon"}
                   className='w-[40%] h-[40%] object-contain'
 
                 />
