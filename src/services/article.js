@@ -25,7 +25,9 @@ export const articleApi = createApi({
     }),
     endpoints: (builder) => ({
         getSummary: builder.query({
-            query: (params) => `test`
+            query: (params) => `/summarize?url=${encodeURIComponent(params.articleUrl)}&length=3`
         })
     })
 })
+// We want to load this on demand/after sumbit is presses and not as soon as the URL is entered
+export const { useLazyGetSummaryQuery } = articleApi;
